@@ -19,13 +19,12 @@ function uservoice_menu() {
   return $items;
 }
 
-
 /**
  * Implementation of hook_page_build
  */
 function uservoice_page_build(&$page) {
-  if(arg(0) == 'admin') {
-    return false;
+  if (arg(0) == 'admin') {
+    return FALSE;
   }
 
   if (!variable_get('api_key')) {

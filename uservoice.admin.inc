@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Module settings form.
+ */
 function uservoice_settings($form, &$form_state) {
 
   $trigger_style_default_value = variable_get('trigger_style', 'icon');
@@ -28,10 +31,11 @@ function uservoice_settings($form, &$form_state) {
     '#default_value' => variable_get('locale', 'EN'),
   );
 
-  if(module_exists('locale')) {
+  if (module_exists('locale')) {
     $form['locale']['#type']    = 'select';
     $form['locale']['#options'] = country_get_list();
-  } else {
+  }
+  else {
     $form['locale']['#type']        = 'textfield';
     $form['locale']['#description'] = t('Ex: FR, EN, etc.<br/>If not supported by UserVoice, the default language is english.');
   }
@@ -39,8 +43,8 @@ function uservoice_settings($form, &$form_state) {
   $form['customization'] = array(
     '#type'        => 'fieldset',
     '#title'       => t('Customization'),
-    '#collapsible' => false,
-    '#collapsed'   => false,
+    '#collapsible' => FALSE,
+    '#collapsed'   => FALSE,
   );
 
   $form['customization']['accent_color'] = array(
@@ -81,7 +85,7 @@ function uservoice_settings($form, &$form_state) {
 
   $trigger_style_value = $trigger_style_default_value;
 
-  if(isset($form_state['values']) && isset($form_state['values']['trigger_style'])) {
+  if (isset($form_state['values']) && isset($form_state['values']['trigger_style'])) {
     $trigger_style_value = $form_state['values']['trigger_style'];
   }
 
@@ -92,7 +96,7 @@ function uservoice_settings($form, &$form_state) {
     'top-right'    => t('top-right'),
   );
 
-  if($trigger_style_value == 'tab') {
+  if ($trigger_style_value == 'tab') {
     $trigger_position_options = array(
       'left'  => t('left'),
       'right' => t('right'),
