@@ -24,7 +24,7 @@ function uservoice_menu() {
  */
 function uservoice_page_build(&$page) {
   if (arg(0) == 'admin') {
-    return false;
+    return FALSE;
   }
 
   if (!variable_get('api_key')) {

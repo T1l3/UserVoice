@@ -43,8 +43,8 @@ function uservoice_settings($form, &$form_state) {
   $form['customization'] = array(
     '#type'        => 'fieldset',
     '#title'       => t('Customization'),
-    '#collapsible' => false,
-    '#collapsed'   => false,
+    '#collapsible' => FALSE,
+    '#collapsed'   => FALSE,
   );
 
   $form['customization']['accent_color'] = array(
