@@ -5,16 +5,16 @@
  */
 function uservoice_settings($form, &$form_state) {
 
-  $trigger_style_default_value = variable_get('trigger_style', 'icon');
+  $trigger_style_default_value = variable_get('uservoice_trigger_style', 'icon');
 
-  $form['api_key'] = array(
+  $form['uservoice_api_key'] = array(
     '#type' => 'textfield',
     '#title' => t('API Key'),
-    '#default_value' => variable_get('api_key', NULL),
+    '#default_value' => variable_get('uservoice_api_key', NULL),
     '#required' => TRUE,
   );
 
-  $form['mode'] = array(
+  $form['uservoice_mode'] = array(
     '#type' => 'select',
     '#title' => t('Mode'),
     '#options' => array(
@@ -22,22 +22,22 @@ function uservoice_settings($form, &$form_state) {
         'satisfaction' => t('Satisfaction Rating'),
         'smartvote'    => t('SmartVote'),
      ),
-    '#default_value' => variable_get('mode', 'contact'),
+    '#default_value' => variable_get('uservoice_mode', 'contact'),
   );
 
-  $form['locale'] = array(
+  $form['uservoice_locale'] = array(
     '#title' => t('Locale'),
     '#description' => t('If not supported by UserVoice, the default language is english.'),
-    '#default_value' => variable_get('locale', 'EN'),
+    '#default_value' => variable_get('uservoice_locale', 'EN'),
   );
 
   if (module_exists('locale')) {
-    $form['locale']['#type']    = 'select';
-    $form['locale']['#options'] = country_get_list();
+    $form['uservoice_locale']['#type']    = 'select';
+    $form['uservoice_locale']['#options'] = country_get_list();
   }
   else {
-    $form['locale']['#type']        = 'textfield';
-    $form['locale']['#description'] = t('Ex: FR, EN, etc.<br/>If not supported by UserVoice, the default language is english.');
+    $form['uservoice_locale']['#type']        = 'textfield';
+    $form['uservoice_locale']['#description'] = t('Ex: FR, EN, etc.<br/>If not supported by UserVoice, the default language is english.');
   }
 
   $form['customization'] = array(
@@ -47,28 +47,28 @@ function uservoice_settings($form, &$form_state) {
     '#collapsed'   => FALSE,
   );
 
-  $form['customization']['accent_color'] = array(
+  $form['customization']['uservoice_accent_color'] = array(
     '#type' => 'textfield',
     '#title' => t('Accent color'),
     '#description' => t('Ex: rgba(68, 141, 214, 0.6), #448dd6, blue'),
-    '#default_value' => variable_get('accent_color', '#448dd6'),
+    '#default_value' => variable_get('uservoice_accent_color', '#448dd6'),
   );
 
-  $form['customization']['trigger_color'] = array(
+  $form['customization']['uservoice_trigger_color'] = array(
     '#type' => 'textfield',
     '#title' => t('Trigger color'),
     '#description' => t('Ex: rgba(255, 255, 255, 1), #ffffff, white'),
-    '#default_value' => variable_get('trigger_color', '#ffffff'),
+    '#default_value' => variable_get('uservoice_trigger_color', '#ffffff'),
   );
 
-  $form['customization']['trigger_background_color'] = array(
+  $form['customization']['uservoice_trigger_background_color'] = array(
     '#type' => 'textfield',
     '#title' => t('Trigger background color'),
     '#description' => t('Ex: rgba(46, 49, 51, 0.6), #2e3133, grey'),
-    '#default_value' => variable_get('trigger_background_color', 'rgba(46, 49, 51, 0.6)'),
+    '#default_value' => variable_get('uservoice_trigger_background_color', 'rgba(46, 49, 51, 0.6)'),
   );
 
-  $form['customization']['trigger_style'] = array(
+  $form['customization']['uservoice_trigger_style'] = array(
     '#type' => 'select',
     '#title' => t('Trigger style'),
     '#options' => array(
@@ -85,8 +85,8 @@ function uservoice_settings($form, &$form_state) {
 
   $trigger_style_value = $trigger_style_default_value;
 
-  if (isset($form_state['values']) && isset($form_state['values']['trigger_style'])) {
-    $trigger_style_value = $form_state['values']['trigger_style'];
+  if (isset($form_state['values']) && isset($form_state['values']['uservoice_trigger_style'])) {
+    $trigger_style_value = $form_state['values']['uservoice_trigger_style'];
   }
 
   $trigger_position_options = array(
@@ -103,18 +103,18 @@ function uservoice_settings($form, &$form_state) {
     );
   }
 
-  $form['customization']['trigger_position'] = array(
+  $form['customization']['uservoice_trigger_position'] = array(
     '#type' => 'select',
     '#prefix' => '<div id="trigger-position-div">',
     '#suffix' => '</div>',
     '#title' => t('Trigger position'),
     '#options' => $trigger_position_options,
-    '#default_value' => variable_get('trigger_position', 'bottom-right'),
+    '#default_value' => variable_get('uservoice_trigger_position', 'bottom-right'),
   );
 
   return system_settings_form($form);
 }
 
 function uservoice_trigger_style_callback($form, $form_state) {
-  return $form['customization']['trigger_position'];
+  return $form['customization']['uservoice_trigger_position'];
 }
