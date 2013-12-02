@@ -27,20 +27,20 @@ function uservoice_page_build(&$page) {
     return FALSE;
   }
 
-  if (!variable_get('api_key')) {
+  if (!variable_get('uservoice_api_key')) {
     drupal_set_message(t('UserVoice setup is not complete. Go to !configureLink and add your API Key.', array('!configureLink' => l('the settings page', 'admin/config/uservoice'))), 'error');
     return;
   }
 
   $uservoice_settings = array(
-    'api_key'                  => variable_get('api_key'),
-    'accent_color'             => variable_get('accent_color'),
-    'trigger_color'            => variable_get('trigger_color'),
-    'trigger_background_color' => variable_get('trigger_background_color'),
-    'trigger_style'            => variable_get('trigger_style'),
-    'trigger_position'         => variable_get('trigger_position'),
-    'mode'                     => variable_get('mode'),
-    'locale'                   => strtolower(variable_get('locale')),
+    'api_key'                  => variable_get('uservoice_api_key'),
+    'accent_color'             => variable_get('uservoice_accent_color'),
+    'trigger_color'            => variable_get('uservoice_trigger_color'),
+    'trigger_background_color' => variable_get('uservoice_trigger_background_color'),
+    'trigger_style'            => variable_get('uservoice_trigger_style'),
+    'trigger_position'         => variable_get('uservoice_trigger_position'),
+    'mode'                     => variable_get('uservoice_mode'),
+    'locale'                   => drupal_strtolower(variable_get('uservoice_locale')),
   );
 
   $path = drupal_get_path('module', 'uservoice');
