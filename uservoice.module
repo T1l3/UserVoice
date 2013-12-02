@@ -5,45 +5,57 @@
  */
 function uservoice_menu() {
   $items = array();
-
   $items['admin/config/uservoice'] = array(
-    'title' => 'UserVoice settings',
-    'description' => 'Administer UserVoice settings',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('uservoice_settings'),
+    'title'            => 'UserVoice settings',
+    'description'      => 'Administer UserVoice settings',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('uservoice_settings'),
     'access arguments' => array('administer site configuration'),
-    'file' => 'uservoice.admin.inc',
-    'type' => MENU_NORMAL_ITEM,
+    'file'             => 'uservoice.admin.inc',
   );
-
   return $items;
 }
 
 /**
- * Implementation of hook_page_build
+ * Implements hook_init().
  */
-function uservoice_page_build(&$page) {
-  if (arg(0) == 'admin') {
-    return FALSE;
+function uservoice_init() {
+  _uservoice_check_api_key();
+  if (!path_is_admin(current_path())) {
+    _uservoice_include_misc();
   }
+}
 
-  if (!variable_get('uservoice_api_key')) {
-    drupal_set_message(t('UserVoice setup is not complete. Go to !configureLink and add your API Key.', array('!configureLink' => l('the settings page', 'admin/config/uservoice'))), 'error');
-    return;
-  }
-
-  $uservoice_settings = array(
-    'api_key'                  => variable_get('uservoice_api_key'),
-    'accent_color'             => variable_get('uservoice_accent_color'),
-    'trigger_color'            => variable_get('uservoice_trigger_color'),
-    'trigger_background_color' => variable_get('uservoice_trigger_background_color'),
-    'trigger_style'            => variable_get('uservoice_trigger_style'),
-    'trigger_position'         => variable_get('uservoice_trigger_position'),
-    'mode'                     => variable_get('uservoice_mode'),
-    'locale'                   => drupal_strtolower(variable_get('uservoice_locale')),
+/**
+ * Include uservoice JS SDk, settings
+ */
+function _uservoice_include_misc() {
+  $keys = array(
+    'api_key',
+    'accent_color',
+    'trigger_color',
+    'trigger_background_color',
+    'trigger_style',
+    'trigger_position',
+    'mode',
+    'locale'
   );
+  foreach ($keys as $name) {
+    $settings[$key] = variable_get('uservoice_'. $name, NULL);
+  }
+  $settings['locale'] = drupal_strtolower($settings['locale']);
+  drupal_add_js(drupal_get_path('module', 'uservoice'). '/js/uservoice.js');
+  drupal_add_js(array('UserVoice' => $settings), 'setting');  
+}
 
-  $path = drupal_get_path('module', 'uservoice');
-  drupal_add_js($path . '/js/uservoice.js');
-  drupal_add_js(array('UserVoice' => $uservoice_settings), 'setting');
+/**
+ * Check if uservoice api key has been setup
+ */
+function _uservoice_check_api_key() {
+  if (!variable_get('uservoice_api_key', NULL)) {
+    $msg = t('UserVoice setup is not complete. Go to !link and add your API Key.', 
+      array('!link' => l('The settings page', 'admin/config/uservoice'))
+    );
+    drupal_set_message($msg, 'error');
+  }
 }
