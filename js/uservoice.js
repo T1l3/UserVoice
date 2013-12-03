@@ -2,24 +2,31 @@
   Drupal.userVoice = Drupal.userVoice || {};
 
   /**
-   * Include the UserVoice JavaScript SDK 
+   * Include the UserVoice JavaScript SDK
    * (only needed once on a page)
    * UserVoice Javascript SDK developer documentation:
    * https://www.UserVoice.com/o/javascript-sdk
-   */ 
+   */
   Drupal.userVoice.include_sdk = function(api_key) {
-    Drupal.userVoice.instance = window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.UserVoice.com/'+api_key+'.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+    UserVoice = window.UserVoice||[];
+    (function(){
+      var uv=document.createElement('script');
+      uv.type='text/javascript';
+      uv.async=true;
+      uv.src='//widget.UserVoice.com/'+api_key+'.js';
+      var s=document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(uv,s);
+    })();
   };
-  
-  
+
   Drupal.behaviors.UserVoice = {
     attach: function (context, settings) {
-      if (!Drupal.userVoice.instance) {
+      if (typeof (UserVoice) === "undefined") {
         Drupal.userVoice.include_sdk(settings.UserVoice.api_key);
       }
 
       // Set colors
-      Drupal.userVoice.instance.push(['set', {
+      UserVoice.push(['set', {
         accent_color: settings.UserVoice.accent_color,
         trigger_color: settings.UserVoice.trigger_color,
         trigger_background_color: settings.UserVoice.trigger_background_color
@@ -27,7 +34,7 @@
 
       // Identify the user and pass traits
       // To enable, replace sample data with actual user traits and uncomment the line
-      Drupal.userVoice.instance.push(['identify', {
+      UserVoice.push(['identify', {
         //email:      'john.doe@example.com', // User’s email address
         //name:       'John Doe', // User’s real name
         //created_at: 1364406966, // Unix timestamp for the date the user signed up
@@ -44,7 +51,7 @@
       }]);
 
       // More settings
-      Drupal.userVoice.instance.push(['addTrigger', {
+      UserVoice.push(['addTrigger', {
         mode: settings.UserVoice.mode,
         trigger_position: settings.UserVoice.trigger_position,
         trigger_style: settings.UserVoice.trigger_style,
@@ -53,8 +60,9 @@
 
       // Or, use your own custom trigger:
       // UserVoice.push(['addTrigger', '#id', { mode: 'contact' }]);
+
       // Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
-      Drupal.userVoice.instance.push(['autoprompt', {}]);
+      UserVoice.push(['autoprompt', {}]);
     }
   };
 })(jQuery);
