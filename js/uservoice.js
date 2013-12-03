@@ -7,15 +7,15 @@
    * UserVoice Javascript SDK developer documentation:
    * https://www.UserVoice.com/o/javascript-sdk
    */ 
-  Drupal.userVoice.include_sdk = function() {
-    Drupal.userVoice.instance = window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.UserVoice.com/'+settings.UserVoice.api_key+'.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+  Drupal.userVoice.include_sdk = function(api_key) {
+    Drupal.userVoice.instance = window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.UserVoice.com/'+api_key+'.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
   };
   
   
   Drupal.behaviors.UserVoice = {
     attach: function (context, settings) {
       if (!Drupal.userVoice.instance) {
-        Drupal.userVoice.include_sdk();
+        Drupal.userVoice.include_sdk(settings.UserVoice.api_key);
       }
 
       // Set colors
